@@ -20,8 +20,22 @@ def getXMLNodeAttributeValue(xmlNode: str, attr: str) -> str:
     return res.group(1) if res else ""
 
 
+def drawDashedRect(draw, leftUpperCoord: Tuple[int, int], rightBottomCoord: Tuple[int, int], color, width, dashFreq=0.5):
+    x1, y1 = leftUpperCoord
+    x2, y2 = rightBottomCoord
+    for x in range(x1, x2, int(width // dashFreq)):
+        draw.line(((x, y1), (x+width, y1)),
+                  color, width)
+        draw.line(((x, y2), (x+width, y2)),
+                  color, width)
+    for y in range(y1, y2, int(width // dashFreq)):
+        draw.line(((x1, y), (x1, y+width)),
+                  color, width)
+        draw.line(((x2, y), (x2, y+width)),
+                  color, width)
+
+
 if __name__ == "__main__":
-    ### PROCEDURE ###
     if len(sys.argv) <= 1:
         sys.exit("Usage: python3 main.py [file_path1] [file_path2] ...")
     filePaths = sys.argv[1:]
@@ -34,25 +48,15 @@ if __name__ == "__main__":
                 xml = f.read()
                 leaves = extractXMLLeaves(xml)
                 for l in leaves:
-                    # Get bounds from leaves
                     bounds = getXMLNodeAttributeValue(l, "bounds")
-                    print(bounds)
                     if bounds:
                         # bounds examples: "[0,96][224,320]" Note that 0 to 224 is the width, 96 to 320 is the height
-                        print(bounds)
                         ((x1, y1), (x2, y2)) = re.findall(
                             r'\[([0-9]*),([0-9]*)[0-9]*]', bounds)
-                        x1, x2, y1, y2 = float(x1), float(
-                            x2), float(y1), float(y2)
-                        width = 5
-                        draw.line(((x1, y1), (x2, y1)),
-                                  ImageColor.getrgb("yellow"), width)
-                        draw.line(((x2, y1), (x2, y2)),
-                                  ImageColor.getrgb("yellow"), width)
-                        draw.line(((x2, y2), (x1, y2)),
-                                  ImageColor.getrgb("yellow"), width)
-                        draw.line(((x1, y2), (x1, y1)),
-                                  ImageColor.getrgb("yellow"), width)
-                        
+                        x1, x2, y1, y2 = int(x1), int(
+                            x2), int(y1), int(y2)
+                        # draw rectangular bound onto image
+                        drawDashedRect(draw, (x1, y1), (x2, y2),
+                                       ImageColor.getrgb("yellow"), 5)
 
             im.show()
