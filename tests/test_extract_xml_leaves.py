@@ -1,7 +1,6 @@
 import unittest
 
-from main import extractXMLLeaves
-
+from xml_leaf_highlighter.main import extractXMLLeaves
 
 class TestExtractXMLLeaves(unittest.TestCase):
 

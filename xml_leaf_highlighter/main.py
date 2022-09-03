@@ -1,5 +1,6 @@
 
 from itertools import chain
+import os
 import re
 import sys
 from typing import List, Tuple
@@ -21,8 +22,7 @@ def getXMLNodeAttributeValue(xmlNode: str, attr: str) -> str:
 
 
 def drawDashedRect(draw, leftUpperCoord: Tuple[int, int], rightBottomCoord: Tuple[int, int], color, width, dashFreq=0.5):
-    x1, y1 = leftUpperCoord
-    x2, y2 = rightBottomCoord
+    (x1, y1), (x2, y2) = leftUpperCoord, rightBottomCoord
     for x in range(x1, x2, int(width // dashFreq)):
         draw.line(((x, y1), (x+width, y1)),
                   color, width)
@@ -33,12 +33,11 @@ def drawDashedRect(draw, leftUpperCoord: Tuple[int, int], rightBottomCoord: Tupl
                   color, width)
         draw.line(((x2, y), (x2, y+width)),
                   color, width)
-
-
-if __name__ == "__main__":
+def main():
     if len(sys.argv) <= 1:
         sys.exit("Usage: python3 main.py [file_path1] [file_path2] ...")
     filePaths = sys.argv[1:]
+    os.makedirs(f"annotated/", exist_ok=True)
     for filePath in filePaths:
         # Finds xml file from root
         with Image.open(f"{filePath}.png") as im:
@@ -58,5 +57,7 @@ if __name__ == "__main__":
                         # draw rectangular bound onto image
                         drawDashedRect(draw, (x1, y1), (x2, y2),
                                        ImageColor.getrgb("yellow"), 5)
-
-            im.show()
+            im.save(f"annotated/{os.path.basename(filePath)}.png")
+            
+if __name__ == "__main__":
+    main()

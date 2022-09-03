@@ -1,6 +1,6 @@
 import unittest
 
-from main import getXMLNodeAttributeValue
+from xml_leaf_highlighter.main import getXMLNodeAttributeValue
 
 
 class TestGetXMLAttr(unittest.TestCase):
