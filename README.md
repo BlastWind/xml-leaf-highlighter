@@ -1,5 +1,5 @@
 # xml-leaf-highlighter
-Parse android's `uiautomator` generated XML, draw yellow boxes onto the corresponding image's leaf elements. Sample inputs are in `tests/data` and sample outputs are in [`annotated/`](annotated/).
+Parse android's `uiautomator` generated XML, draw yellow boxes onto the corresponding image's leaf elements. Sample inputs are in `tests/data` and sample outputs are in [`annotated/`](annotated/). **This is a school project, a little warmup for my software engineering class. So please do not use in production!**
 
 ### Usage
 Input: Array of paths, each path corresponds to a `xml` file to parse and a `png` file to draw onto. See `tests/data` for example pairs.
